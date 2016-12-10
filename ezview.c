@@ -63,7 +63,7 @@ V[2]->edge = E[3];
 V[3]->edge = E[2];
 
 //Vi = (n-3/n)di
-I = (1 - Kr - Kt) * Ilocal + Kr *IR + Kt * IT
+I = (l - Kr - Kt) * Ilocal + Kr *IR + Kt * IT
 
 
 typedef struct{
