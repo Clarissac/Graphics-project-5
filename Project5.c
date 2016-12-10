@@ -8,7 +8,7 @@
 #include <assert.h>
 
 
-/*typedef struct Edge{
+typedef struct Edge{
         face* face;
         vertex* vertex;
         Edge* next;
@@ -49,15 +49,21 @@ do{
         visit(current);
         current = current->previous->pair;
     }
-SetEdge(Edge, vertex
+SetEdge(Edge, vertex, Face, prev_edge, next_edge, pair_edge);
+SetEdge(E[0], V[0], E[2], E[1], E[11]);
+SetEdge E[1], V[1], E[0], E[2], E[5];
+F[0]->edge = E[0];
+F[1]->edge = E[2];
+F[2]->edge = E[7];
+F[3]->edge = E[9];
 
+V[0]->edge = E[0];
+V[1]->edge = E[1];
+V[2]->edge = E[3];
+V[3]->edge = E[2];
 
-
-
-
-
-*/
-
+Vi = (n-3/n)di
+I = (1 - Kr - Kt) * Ilocal + Kr *IR + Kt * IT
 
 
 typedef struct {
