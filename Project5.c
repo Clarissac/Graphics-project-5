@@ -64,18 +64,18 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 GLint simple_shader(GLint shader_type, char* shader_src){
 	GLint compile_success = 0;
 
-	int shader_id = glCreateShader(shader_type);
-	glShaderSource(Shader_id, 1, &shader_src, 0);
-	glCompileShader(shader_id);
-	glGetShaderiv(shader_id, GL_COMPILE_STATUS, &compile_success);
-	if(compile_success == GL_FALSE){
-		gcchar message[256];
-		glGetShaderInfoLog(shader_id), sizeof(message), 0, &manage[0]);
-		printf("glCompileShaderError: %s\n", message);
-		exit(1);
-	}
-	return shader_id;
-	}
+int shader_id = glCreateShader(shader_type);
+glShaderSource(Shader_id, 1, &shader_src, 0);
+glCompileShader(shader_id);
+glGetShaderiv(shader_id, GL_COMPILE_STATUS, &compile_success);
+if(compile_success == GL_FALSE){
+	gcchar message[256];
+glGetShaderInfoLog(shader_id), sizeof(message), 0, &manage[0]);
+printf("glCompileShaderError: %s\n", message);
+exit(1);
+}
+return shader_id;
+}
 
 // 4 x 4 image..
 unsigned char image[] = {
@@ -159,21 +159,14 @@ int main(void)
     GLint tex_location = glGetUniformLocation(program, "Texture");
     assert(tex_location != -1);
 
-    glEnableVertexAttribArray(vpos_location);
-    glVertexAttribPointer(vpos_location,
-			  2,
-			  GL_FLOAT,
-			  GL_FALSE,
-                          sizeof(Vertex),
-			  (void*) 0);
+    vcol_location = glGetAttribLocation(prpgram, "vcol");
 
+    glEnableVertexAttribArray(vpos_location);
+    glVertexAttribPointer(vpos_location, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*) 0);
+
+    glEnableVertexAttribArray(vcol_location);
     glEnableVertexAttribArray(texcoord_location);
-    glVertexAttribPointer(texcoord_location,
-			  2,
-			  GL_FLOAT,
-			  GL_FALSE,
-                          sizeof(Vertex),
-			  (void*) (sizeof(float) * 2));
+    glVertexAttribPointer(texcoord_location, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*) (sizeof(float) * 2));
 
     int image_width = 4;
     int image_height = 4;
@@ -222,4 +215,4 @@ int main(void)
     exit(EXIT_SUCCESS);
 }
 
-//! [code]
+
