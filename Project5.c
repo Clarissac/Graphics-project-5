@@ -7,6 +7,59 @@
 #include <stdio.h>
 #include <assert.h>
 
+
+/*typedef struct Edge{
+        face* face;
+        vertex* vertex;
+        Edge* next;
+        Edge* prev;
+        Edge pair;
+}Edge;
+typedef struct vertex{
+float position[3];
+Edge* edge;
+}vertex;
+
+typedef struct{
+    Edge* edge;
+}Face;
+Edge* start = face->edge;
+Edge* current = start;
+do{
+    draw(e):
+        current = current ->next;
+}
+Edge start = face->edge;
+Edge*current = start;
+norm = Vec(0,0,0);
+current_edge_vector = vec3();
+previous_edge_vector = vec3();
+do{
+    current_edge_vector = current-> next->vertex-current.vertex;
+    if(current_edge_vector&& previous_edge_vector){
+        norm = cross(current_edge_vector, previous_edge_vector);
+    }
+    previous_edge_vector = current_edge_vector
+    current = current->next;
+    normalize(norm);
+
+    Edge* Start = vertex->edge;
+    Edge* current = start;
+    do{
+        visit(current);
+        current = current->previous->pair;
+    }
+SetEdge(Edge, vertex
+
+
+
+
+
+
+*/
+
+
+
 typedef struct {
   float Position[2];
   float TexCoord[2];
@@ -99,8 +152,39 @@ unsigned char image[] = {
   255, 0, 255, 255,
   255, 0, 255, 255
 };
+
+GLuint simple_program(){
+    GLint link_success = 0;
+    GLint program_id = glCreateProgram();
+    GLuint vertex_shader = simple_shader(GL_VERTEX_SHADER, vertex_shader_src);
+    GLuint fragment_shader = simple_shader(GL_FRAGMENT_SHADER, fragment_shader_src);
+
+    glAttachShader(program_id), vertex_shader);
+    glAttachShader(program_id), fragment_shader);
+
+    glLinkProgram(program_id);
+    glGetProgram(program_id, GL_LINK_STATUS, &link-success);
+
+    if(link_success == GL_FALSE); {
+        GLchar message[256];
+        glGetProgramInfoLog(program_id, sizeof(message); 0, &message[0]);
+        printf("glLinkProgramError: %S\n", message);
+        exit(1);
+    }
+    return program_id;
+}
+
+
+
+
 static void error_callback(int error, char* description){
-    promtf("GLFW Error: %s\n", error, description):
+    promtf("GLFW Error: %s\n", error, description);
+}
+
+
+
+
+
 int main(void)
 {
     GLint program_id, position_slot, color_slot;
@@ -249,26 +333,7 @@ int main(void)
     glfwTerminate();
     exit(EXIT_SUCCESS);
 }
-GLuint simple_program(){
-    GLint link_success = 0;
-    GLint program_id = glCreateProgram();
-    GLuint vertex_shader = simple_shader(GL_VERTEX_SHADER, vertex_shader_src);
-    GLuint fragment_shader = simple_shader(GL_FRAGMENT_SHADER, fragment_shader_src);
 
-    glAttachShader(program_id), vertex_shader);
-    glAttachShader(program_id), fragment_shader);
-
-    glLinkProgram(program_id);
-    glGetProgram(program_id, GL_LINK_STATUS, &link-success);
-
-    if(link_success == GL_FALSE); {
-        GLchar message[256];
-        glGetProgramInfoLog(program_id, sizeof(message); 0, &message[0]);
-        printf("glLinkProgramError: %S\n", message);
-        exit(1);
-    }
-    return program_id;
-}
 
 
 
