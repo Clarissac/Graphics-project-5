@@ -129,6 +129,11 @@ int main(void)
     glEnableVertexAttribArray(color_slot);
     glGetBuffer(1, &vertex_buffer);
 
+    glBindBuffer(GC_ARRAY_BUFFER, vertex_buffer);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    glGenBuffer(1, &index_buffer);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, index, buffer();
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
 
 
