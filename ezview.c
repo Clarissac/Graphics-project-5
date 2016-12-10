@@ -62,8 +62,15 @@ V[1]->edge = E[1];
 V[2]->edge = E[3];
 V[3]->edge = E[2];
 
-Vi = (n-3/n)di
+//Vi = (n-3/n)di
 I = (1 - Kr - Kt) * Ilocal + Kr *IR + Kt * IT
+
+
+typedef struct{
+    face* face;
+    vertex* vertex-1;
+    vertex* vertex-2;
+}Edge;
 
 
 typedef struct {
