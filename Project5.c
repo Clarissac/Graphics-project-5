@@ -31,113 +31,6 @@ static const struct{
     {0.6f, -0.4f,0f,1.f,0.f}
     {0.f,0.6f,0.f,0.f,1.f}
 }
-
-void read_scene(char* filename, buffer) {
-  int c;
-  FILE* json = fopen(filename, "r");
-
-  if (json == NULL) {
-    fprintf(stderr, "Error: Could not open file \"%s\"\n", filename);
-    exit(1);
-  }
-
-  skip_ws(json);
-
-  // Find the beginning of the list
-  expect_c(json, '[');
-
-  skip_ws(json);
-
-  // Find the objects
-
-  while (1) {
-    c = fgetc(json);
-    if (c == ']') {
-      fprintf(stderr, "Error: This is the worst scene file EVER.\n");
-      fclose(json);
-      return;
-    }
-    if (c == '{') {
-      skip_ws(json);
-
-      // Parse the object
-      char* key = next_string(json);
-      if (strcmp(key, "type") != 0) {
-	fprintf(stderr, "Error: Expected \"type\" key on line number %d.\n", line);
-	exit(1);
-      }
-
-      skip_ws(json);
-
-      expect_c(json, ':');
-
-      skip_ws(json);
-
-      char* value = next_string(json);
-
-      if (strcmp(value, "camera") == 0) {
-      } else if (strcmp(value, "sphere") == 0) {
-      } else if (strcmp(value, "plane") == 0) {
-      } else {
-	fprintf(stderr, "Error: Unknown type, \"%s\", on line number %d.\n", value, line);
-	exit(1);
-      }
-
-      skip_ws(json);
-
-      while (1) {
-	// , }
-	c = next_c(json);
-	if (c == '}') {
-	  // stop parsing this object
-	  break;
-	} else if (c == ',') {
-	  // read another field
-	  skip_ws(json);
-	  char* key = next_string(json);
-	  skip_ws(json);
-	  expect_c(json, ':');
-	  skip_ws(json);
-	  if ((strcmp(key, "width") == 0) ||
-	      (strcmp(key, "height") == 0) ||
-	      (strcmp(key, "radius") == 0)) {
-	    double value = next_number(json);
-	  } else if ((strcmp(key, "color") == 0) ||
-		     (strcmp(key, "position") == 0) ||
-		     (strcmp(key, "normal") == 0)) {
-	    double* value = next_vector(json);
-	  } else {
-	    fprintf(stderr, "Error: Unknown property, \"%s\", on line %d.\n",
-		    key, line);
-	    //char* value = next_string(json);
-	  }
-	  skip_ws(json);
-	} else {
-	  fprintf(stderr, "Error: Unexpected value on line %d\n", line);
-	  exit(1);
-	}
-      }
-      skip_ws(json);
-      c = next_c(json);
-      if (c == ',') {
-	// noop
-	skip_ws(json);
-      } else if (c == ']') {
-	fclose(json);
-	return;
-      } else {
-	fprintf(stderr, "Error: Expecting ',' or ']' on line %d.\n", line);
-	exit(1);
-      }
-    }
-  }
-  fclose(FILE);
-}
-
-
-
-
-
 static const char* vertex_shader_text =
 "uniform mat4 MVP;\n"
 "attribute vec2 TexCoordIn;\n"
@@ -206,9 +99,39 @@ unsigned char image[] = {
   255, 0, 255, 255,
   255, 0, 255, 255
 };
-
+static void error_callback(int error, char* description){
+    promtf("GLFW Error: %s\n", error, description):
 int main(void)
 {
+    GLint program_id, position_slot, color_slot;
+    GLuint vertex_buffer;
+    GLuint index_buffer;
+    glfwSetErrorCallback(error_callback);
+    if(!glfwInit()) return -1;
+
+    glfwDefaultWindowHints();
+    glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_ES_API);
+    glfwWindowHint(GLFW_CONTEXT_CREATION_API_GLFW_EGL_CONTEXT_API);
+    glfwWIndowHint(GLFW_CONTEXT_MAJOR_VERSION, 2);
+    glfwWindowHint(GLFW_CONTEXT_MINOR_VERSION, 0);
+
+    window = glfwCreateWindow(640, 480 "Program", NULL, NULL);
+    if(!Window){
+        glfwTerminate();
+        exit(1);
+    }
+    glfwMakeContextCurrent(Window);
+    program_id = simple_program();
+    glUse Program(program_id);
+    position_slot = glGetAttribLocation(program_id, "Position");
+    color_slot = glGetAttribLocation(program_id, "SourceColor");
+    glEnableVertexAttribArray(position_slot);
+    glEnableVertexAttribArray(color_slot);
+    glGetBuffer(1, &vertex_buffer);
+
+
+
+
     GLFWwindow* window;
     GLuint vertex_buffer, vertex_shader, fragment_shader, program;
     GLint mvp_location, vpos_location, vcol_location;
@@ -341,11 +264,7 @@ GLuint simple_program(){
     }
     return program_id;
 }
-void write_p3(Pixel* buffer, int width, int height, char* filename) {
-      FILE* fh = fopen(filename, "w");
-      fprintf("P3 %d %d 255 ");
-      for ( int i=0; i<w*h; i+=1) {
-            fprintf("%d %d %d ", buffer[i].r, buffer[i].g, buffer[i].b);
-      }
-      fclose(fh);
+
+
+
 
