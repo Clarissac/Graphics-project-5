@@ -61,24 +61,21 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
         glfwSetWindowShouldClose(window, GLFW_TRUE);
 }
 
-void glCompileShaderOrDie(GLuint shader) {
-  GLint compiled;
-  glCompileShader(shader);
-  glGetShaderiv(shader,
-		GL_COMPILE_STATUS,
-		&compiled);
-  if (!compiled) {
-    GLint infoLen = 0;
-    glGetShaderiv(shader,
-		  GL_INFO_LOG_LENGTH,
-		  &infoLen);
-    char* info = malloc(infoLen+1);
-    GLint done;
-    glGetShaderInfoLog(shader, infoLen, &done, info);
-    printf("Unable to compile shader: %s\n", info);
-    exit(1);
-  }
-}
+GLint simple_shader(GLint shader_type, char* shader_src){
+	GLint compile_success = 0;
+
+	int shader_id = glCreateShader(shader_type);
+	glShaderSource(Shader_id, 1, &shader_src, 0);
+	glCompileShader(shader_id);
+	glGetShaderiv(shader_id, GL_COMPILE_STATUS, &compile_success);
+	if(compile_success == GL_FALSE){
+		gcchar message[256];
+		glGetShaderInfoLog(shader_id), sizeof(message), 0, &manage[0]);
+		printf("glCompileShaderError: %s\n", message);
+		exit(1);
+	}
+	return shader_id;
+	}
 
 // 4 x 4 image..
 unsigned char image[] = {
@@ -134,15 +131,15 @@ int main(void)
 
     glGenBuffers(1, &vertex_buffer);
     glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertexes), vertexes, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
     vertex_shader = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertex_shader, 1, &vertex_shader_text, NULL);
-    glCompileShaderOrDie(vertex_shader);
+    GLint simple_shader(vertex_shader);
 
     fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
     glShaderSource(fragment_shader, 1, &fragment_shader_text, NULL);
-    glCompileShaderOrDie(fragment_shader);
+    GLint simple_shader(fragment_shader);
 
     program = glCreateProgram();
     glAttachShader(program, vertex_shader);
