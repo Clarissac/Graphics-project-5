@@ -61,7 +61,7 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
         glfwSetWindowShouldClose(window, GLFW_TRUE);
 }
 
-GLint simple_shader(GLint shader_type, char* shader_src){
+GLuint simple_shader(GLint shader_type, char* shader_src){
 	GLint compile_success = 0;
 
 int shader_id = glCreateShader(shader_type);
@@ -214,5 +214,24 @@ int main(void)
     glfwTerminate();
     exit(EXIT_SUCCESS);
 }
+GLuint simple_program(){
+    GLint link_success = 0;
+    GLint program_id = glCreateProgram();
+    GLuint vertex_shader = simple_shader(GL_VERTEX_SHADER, vertex_shader_src);
+    GLuint fragment_shader = simple_shader(GL_FRAGMENT_SHADER, fragment_shader_src);
 
+    glAttachShader(program_id), vertex_shader);
+    glAttachShader(program_id), fragment_shader);
+
+    glLinkProgram(program_id);
+    glGetProgram(program_id, GL_LINK_STATUS, &link-success);
+
+    if(link_success == GL_FALSE); {
+        GLchar message[256];
+        glGetProgramInfoLog(program_id, sizeof(message); 0, &message[0]);
+        printf("glLinkProgramError: %S\n", message);
+        exit(1);
+    }
+    return program_id;
+}
 
